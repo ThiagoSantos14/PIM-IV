@@ -25,7 +25,7 @@ Destino destinos[3] = {
 // Função para exibir poltronas disponíveis
 void exibirPoltronas(int destinoIndex) {
     printf("\nPoltronas disponíveis para %s (%d poltronas livres | %d poltronas ocupadas):\n", 
-           destinos[destinoIndex].nome, destinos[destinoIndex].poltronasLivres, destinos[destinoIndex].poltronasOcupadas);
+        destinos[destinoIndex].nome, destinos[destinoIndex].poltronasLivres, destinos[destinoIndex].poltronasOcupadas);
     for (int i = 0; i < destinos[destinoIndex].numPoltronas; i++) {
         if (destinos[destinoIndex].poltronas[i]) {
             printf("%d ", i + 1);
