@@ -10,7 +10,7 @@ Clone o repositório:
 
 bash
 Copy code
-git clone https://github.com/seu-usuario/sistema-vendas-passagens-c.git
+git clone https://github.com/ThiagoSantos14/sistema-vendas-passagens-c.git
 Compile o código:
 
 Copy code
@@ -34,5 +34,3 @@ Este projeto foi desenvolvido por Thiago Santos.
 
 Licença
 Este projeto é licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
-
-Lembre-se de substituir "Seu Nome" e "seu-usuario" pelos seus dados reais. Este README fornece uma visão geral do projeto, como usá-lo, sua estrutura, como contribuir, o autor e a licença. Certifique-se de incluir informações relevantes para o seu projeto específico.
