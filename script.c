@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 // Estrutura para armazenar informações sobre destinos
 typedef struct {
@@ -8,50 +9,53 @@ typedef struct {
     char horarioChegada[10];
     float valorNormal;
     float valorEstudante;
+    int numPoltronas;
+    int poltronasLivres;
+    int poltronasOcupadas;
+    bool poltronas[50]; // Assumindo um máximo de 50 poltronas por veículo
 } Destino;
 
-// Estrutura para armazenar informações sobre transações
-typedef struct {
-    char destino[20];
-    float valor;
-} Transacao;
+// Inicializa os destinos com todas as poltronas disponíveis
+Destino destinos[3] = {
+    {"Jundiaí", "08:00", "10:30", 50.0, 40.0, 38, 38, 0, {true}}, // Todas as poltronas disponíveis inicialmente
+    {"Santos", "09:30", "12:00", 70.0, 55.0, 38, 38, 0, {true}},
+    {"Ribeirão Preto", "10:00", "14:00", 90.0, 70.0, 38, 38, 0, {true}}
+};
 
-Transacao transacoes[100]; // Array para armazenar as transações
-int numTransacoes = 0; // Número atual de transações
-
-// Função para registrar uma venda de passagem
-void registrarVenda(char destino[], float valor) {
-    if (numTransacoes < 100) {
-        strcpy(transacoes[numTransacoes].destino, destino);
-        transacoes[numTransacoes].valor = valor;
-        numTransacoes++;
-        printf("Venda registrada com sucesso!\n");
-    } else {
-        printf("Não foi possível registrar a venda. Limite de transações atingido.\n");
+// Função para exibir poltronas disponíveis
+void exibirPoltronas(int destinoIndex) {
+    printf("\nPoltronas disponíveis para %s (%d poltronas livres | %d poltronas ocupadas):\n", 
+           destinos[destinoIndex].nome, destinos[destinoIndex].poltronasLivres, destinos[destinoIndex].poltronasOcupadas);
+    for (int i = 0; i < destinos[destinoIndex].numPoltronas; i++) {
+        if (destinos[destinoIndex].poltronas[i]) {
+            printf("%d ", i + 1);
+        }
     }
+    printf("\n");
 }
 
-// Função para exibir o relatório de caixa
-void relatorioCaixa() {
-    float totalVendas = 0;
+// Função para selecionar a poltrona
+int selecionarPoltrona(int destinoIndex) {
+    int poltronaSelecionada;
 
-    printf("\n=== Relatório de Caixa ===\n");
-    printf("Destino\t\tValor\n");
-    for (int i = 0; i < numTransacoes; i++) {
-        printf("%s\t\tR$%.2f\n", transacoes[i].destino, transacoes[i].valor);
-        totalVendas += transacoes[i].valor;
+    exibirPoltronas(destinoIndex);
+
+    printf("Selecione o número da poltrona desejada: ");
+    scanf("%d", &poltronaSelecionada);
+
+    if (poltronaSelecionada < 1 || poltronaSelecionada > destinos[destinoIndex].numPoltronas || !destinos[destinoIndex].poltronas[poltronaSelecionada - 1]) {
+        printf("Poltrona inválida ou já ocupada.\n");
+        return -1; // Retorna -1 se a poltrona for inválida
     }
-    printf("Total de Vendas: R$%.2f\n", totalVendas);
+
+    destinos[destinoIndex].poltronas[poltronaSelecionada - 1] = false; // Marca a poltrona como ocupada
+    destinos[destinoIndex].poltronasLivres--; // Decrementa o número de poltronas livres
+    destinos[destinoIndex].poltronasOcupadas++; // Incrementa o número de poltronas ocupadas
+    return poltronaSelecionada;
 }
 
 // Função para comprar passagem
 void comprarPassagem() {
-    Destino destinos[3] = {
-        {"Jundiaí", "08:00", "10:30", 50.0, 40.0},
-        {"Santos", "09:30", "12:00", 70.0, 55.0},
-        {"Ribeirão Preto", "10:00", "14:00", 90.0, 70.0}
-    };
-
     int opcaoDestino;
 
     printf("\nEscolha o destino:\n");
@@ -77,8 +81,25 @@ void comprarPassagem() {
         return;
     }
 
-    float valorPassagem = tipoCliente ? destinos[opcaoDestino - 1].valorEstudante : destinos[opcaoDestino - 1].valorNormal;
-    registrarVenda(destinos[opcaoDestino - 1].nome, valorPassagem);
+    int poltronaSelecionada = selecionarPoltrona(opcaoDestino - 1);
+
+    if (poltronaSelecionada != -1) {
+        float valorPassagem = tipoCliente ? destinos[opcaoDestino - 1].valorEstudante : destinos[opcaoDestino - 1].valorNormal;
+        printf("Passagem comprada com sucesso para %s. Poltrona: %d. Valor: R$%.2f\n", destinos[opcaoDestino - 1].nome, poltronaSelecionada, valorPassagem);
+    }
+}
+
+// Função para exibir relatório de caixa
+void relatorioCaixa() {
+    float totalVendas = 0.0;
+
+    for (int i = 0; i < 3; i++) {
+        float vendasDestino = (destinos[i].valorNormal * (destinos[i].numPoltronas - destinos[i].poltronasLivres)) + (destinos[i].valorEstudante * (destinos[i].numPoltronas - destinos[i].poltronasLivres));
+        totalVendas += vendasDestino;
+        printf("Total de vendas para %s: R$%.2f\n", destinos[i].nome, vendasDestino);
+    }
+
+    printf("\nTotal de vendas realizadas: R$%.2f\n", totalVendas);
 }
 
 int main() {
