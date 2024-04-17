@@ -32,5 +32,4 @@ Contribuições são bem-vindas! Se você encontrar algum problema ou tiver algu
 Autor
 Este projeto foi desenvolvido por Thiago Santos.
 
-Licença
-Este projeto é licenciado sob a licença MIT - veja o arquivo LICENSE para detalhes.
+
