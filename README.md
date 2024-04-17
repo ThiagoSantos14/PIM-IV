@@ -25,7 +25,7 @@ Siga as instruções exibidas no terminal para utilizar o sistema.
 Estrutura do Projeto
 sistema_vendas_passagens.c: O código-fonte principal do sistema.
 README.md: Este arquivo README, contendo informações sobre o projeto.
-LICENSE: Uma licença de código aberto (opcional).
+LICENSE: Uma licença de código aberto.
 Contribuição
 Contribuições são bem-vindas! Se você encontrar algum problema ou tiver alguma sugestão de melhoria, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
